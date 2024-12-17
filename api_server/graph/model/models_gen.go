@@ -6,6 +6,10 @@ import (
 	models "app/models/generated"
 )
 
+type CheckSignedInResponse struct {
+	IsSignedIn bool `json:"isSignedIn"`
+}
+
 type CreateTodoInput struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`

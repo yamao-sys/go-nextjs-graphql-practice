@@ -143,6 +143,48 @@ func (s *TestUserResolverSuite) TestSignIn() {
 	assert.NotEmpty(s.T(), res.Header().Get("Set-Cookie"))
 }
 
+func (s *TestUserResolverSuite) TestCheckSignedIn_Ok() {
+	s.SetAuthUser()
+	s.SignIn()
+
+	res := httptest.NewRecorder()
+	query := map[string]interface{}{
+		"query": `query checkSignedIn {
+			checkSignedIn {
+				isSignedIn
+			}
+		}`,
+	}
+
+	checkSignedInRequestBody, _ := json.Marshal(query)
+	req := httptest.NewRequest(http.MethodPost, "/query", strings.NewReader(string(checkSignedInRequestBody)))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Cookie", "token="+token)
+	testUserGraphQLServerHandler.ServeHTTP(res, req)
+
+	assert.Equal(s.T(), 200, res.Code)
+	assert.Contains(s.T(), res.Body.String(), "\"isSignedIn\":true")
+}
+
+func (s *TestUserResolverSuite) TestCheckSignedIn_NotOk() {
+	res := httptest.NewRecorder()
+	query := map[string]interface{}{
+		"query": `query checkSignedIn {
+			checkSignedIn {
+				isSignedIn
+			}
+		}`,
+	}
+
+	checkSignedInRequestBody, _ := json.Marshal(query)
+	req := httptest.NewRequest(http.MethodPost, "/query", strings.NewReader(string(checkSignedInRequestBody)))
+	req.Header.Set("Content-Type", "application/json")
+	testUserGraphQLServerHandler.ServeHTTP(res, req)
+
+	assert.Equal(s.T(), 200, res.Code)
+	assert.Contains(s.T(), res.Body.String(), "\"isSignedIn\":false")
+}
+
 func TestUserResolver(t *testing.T) {
 	// テストスイートを実施
 	suite.Run(t, new(TestUserResolverSuite))

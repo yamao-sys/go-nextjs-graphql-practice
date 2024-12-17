@@ -33,6 +33,14 @@ type SignInResponse {
 	validationError: String!
 }
 
+type CheckSignedInResponse {
+	isSignedIn: Boolean!
+}
+
+extend type Query {
+	checkSignedIn: CheckSignedInResponse!
+}
+
 extend type Mutation {
 	signUp(input: SignUpInput!): SignUpResponse!
 	signIn(input: SignInInput!): SignInResponse!

@@ -2,6 +2,7 @@ import { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   overwrite: true,
   schema: ['graph/**/*.graphqls'], // バックエンドgraphql schema定義ファイルを参照 (*1)
+  documents: 'graphql/**/*.graphql',
   generates: {
     'graphql/__generated__/graphql-schema-types.ts': {
       plugins: ['typescript'],

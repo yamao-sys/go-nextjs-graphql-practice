@@ -19,6 +19,11 @@ export type Scalars = {
   DateTime: { input: any; output: any };
 };
 
+export type CheckSignedInResponse = {
+  __typename?: 'CheckSignedInResponse';
+  isSignedIn: Scalars['Boolean']['output'];
+};
+
 export type CreateTodoInput = {
   content: Scalars['String']['input'];
   title: Scalars['String']['input'];
@@ -56,6 +61,7 @@ export type MutationUpdateTodoArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  checkSignedIn: CheckSignedInResponse;
   fetchTodo: Todo;
   fetchTodoLists: Array<Todo>;
 };

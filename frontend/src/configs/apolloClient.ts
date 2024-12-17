@@ -1,5 +1,6 @@
 'use server';
 
+import { getAllCookies } from '@/lib/getAllCookies';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
@@ -23,7 +24,7 @@ const getLink = () => {
     return {
       headers: {
         ...headers,
-        // authorization: 'Bearer XXX',
+        cookie: await getAllCookies(),
       },
     };
   });
